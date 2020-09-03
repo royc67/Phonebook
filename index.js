@@ -27,6 +27,15 @@ let phoneBook = [
     {name: "ghi", number: "052-2222222", id: 3},
     {name: "jkl", number: "052-3333333", id: 4},
 ]
+const options = [
+  {message: 'Get info.' ,method: 'get', path: '/info'},
+  {message: 'Request phonebook.' ,method: 'get', path: '/api/persons'},
+  {message: 'Request person by ID.' ,method: 'get', path: '/api/persons/:id'},
+  {message: 'Delete person by ID.' ,method: 'delete', path: '/api/persons/:id'}, 
+  {message: 'Add person to phonebook. must add name+number in the request\'s body.' ,method: 'post', path: '/api/persons'},
+  {message: 'get options' ,method: 'options', path: '/'}  
+]
+
 app.get('/info', (request, response) =>{
     const currentDate = new Date();
     response.send(
@@ -70,6 +79,12 @@ app.post('/api/persons', (request, response) =>{
 
     phoneBook = phoneBook.concat(phoneRecord);
     response.send(phoneRecord)
+})
+
+app.options('/', (request, response) => {
+    response.send(
+        options.map((option, i) => `${i+1}. ${option.message}: method: ${option.method} path: ${option.path}`)
+    )
 })
 
 const unknownEndpoint = (request, response) => {
