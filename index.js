@@ -4,6 +4,12 @@ const app = express();
 
 app.use(express.json());
 
+const requestLogger = (request, response, next) => {
+    console.log('Method:', request.method)
+    console.log('Path:  ', request.path)
+    console.log('Body:  ', request.body)
+    console.log('---')
+    next()
 let phoneBook = [
     {name: "abc", number: "052-0000000", id: 1},
     {name: "def", number: "052-1111111", id: 2},
