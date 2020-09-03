@@ -10,6 +10,17 @@ const requestLogger = (request, response, next) => {
     console.log('Body:  ', request.body)
     console.log('---')
     next()
+}
+
+const validateInput = (body) => {
+    if (!(body.number && body.name)) return {error: true, message: 'name or number are missing'}
+    else if (phoneBook.find(phoneRecord => phoneRecord.name === body.name)) return {error: true, message: `${body.name} already exists!`}
+    else if (typeof(body.number) !== "string" && typeof(body.name) !== "string") return {error: true, message: 'invalid inputs. name/number must conatain string'}
+    else return {error: false, message: 'OK'}
+}
+
+app.use(requestLogger);
+
 let phoneBook = [
     {name: "abc", number: "052-0000000", id: 1},
     {name: "def", number: "052-1111111", id: 2},
@@ -47,8 +58,9 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) =>{
     const body = request.body;
-    if (!(body.number && body.name)) return response.status(400).json({error: 'name or number are missing'})
-    else if (phoneBook.find(phoneRecord => phoneRecord.name === body.name)) return response.status(400).json({error: `${body.name} already exists!`})
+    const valInput = validateInput(body)
+    if (valInput.error) return response.status(400).json({error: valInput.message})
+    // else if (phoneBook.find(phoneRecord => phoneRecord.name === body.name)) return response.status(400).json({error: `${body.name} already exists!`})
     
     const phoneRecord = {
         name: body.name,
