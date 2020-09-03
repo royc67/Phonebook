@@ -72,6 +72,11 @@ app.post('/api/persons', (request, response) =>{
     response.send(phoneRecord)
 })
 
+const unknownEndpoint = (request, response) => {
+    return response.status('400').json({error: 'Unknown endpoint'})
+}
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT)
