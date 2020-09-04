@@ -5,3 +5,7 @@
 *.md
 *.ico
 *.svg
+server/node_modules/cors/lib/index.js
+server/node_modules/cors/LICENSE
+server/node_modules/object-assign/index.js
+server/node_modules/object-assign/license
