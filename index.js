@@ -3,10 +3,15 @@ const app = express();
 const morgan = require('morgan')
 const cors = require('cors')
 
+app.use(express.static('build'))
+app.use(express.json());
 app.use(cors())
 
-app.use(express.json());
-app.use(morgan('dev'))
+
+
+morgan.token('body', function (req, res) { return JSON.stringify(req.body)})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 const requestLogger = (request, response, next) => {
     console.log('Method:', request.method)
@@ -23,7 +28,7 @@ const validateInput = (body) => {
     else return {error: false, message: 'OK'}
 }
 
-app.use(requestLogger);
+// app.use(requestLogger);
 
 let phoneBook = [
     {name: "abc", number: "052-0000000", id: 1},
